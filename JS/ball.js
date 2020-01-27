@@ -30,4 +30,5 @@ class Ball {
         axis === "X" ? this._velX *= -1 : null
         axis === "Y" ? this._velY *= -1 : null
     }
+    
 }

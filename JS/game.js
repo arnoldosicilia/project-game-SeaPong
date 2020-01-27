@@ -22,6 +22,14 @@ const seaPong = {
     },
 
     ballArr: [],
+    obsArr: [],
+
+    obstacleType: ["../game/images/octopus.png",
+        "../game/images/orca.png",
+        "../game/images/tortoise.png",
+        "../game/images/jellyfish.png",
+        "../game/images/shell.svg"
+    ],
 
     init() {
         this.canvasDom = document.querySelector("canvas");
@@ -31,6 +39,10 @@ const seaPong = {
         this.setBackground();
         this.setListeners();
         this.start();
+        this.setInstances()
+    },
+
+    setInstances() { // All objets that need to be instanced to start the are called here
         this.player1 = new Player(
             this.ctx,
             this.canvasDom.width,
@@ -49,7 +61,9 @@ const seaPong = {
         );
         this.newBall();
         this.newBall();
+        this.newBall();
 
+        this.newObstacle()
 
     },
 
@@ -70,6 +84,7 @@ const seaPong = {
             this.drawAll();
             this.moveAll();
             this.checkBallArr()
+            this.checkObsArr()
         }, 100);
     },
 
@@ -77,7 +92,10 @@ const seaPong = {
         this.setBackground(); //This makes the background to adapt to the windos sizes
         this.player1.draw();
         this.player2.draw();
-        this.ballArr.forEach(elm => {
+        this.ballArr.forEach(elm => { //This drams all de balls in the ballArr
+            elm.draw()
+        })
+        this.obsArr.forEach(elm => {
             elm.draw()
         })
 
@@ -97,9 +115,16 @@ const seaPong = {
         this.ballArr.forEach(elm => {
             this.checkCollision(elm);
             this.checkBallX(elm);
-
+            //this.newObstacle.obsCheckCollision(elm)
         })
     },
+    checkObsArr() {
+        this.obsArr.forEach(elm => {
+            elm.obsCheckCollision(this.ballArr)
+        })
+
+    },
+
 
     setBackground() {
         this.background = new Background(
@@ -149,18 +174,20 @@ const seaPong = {
     },
 
     checkBallX(ball) {
-        ball._posX < 0 ? this.stopGame() : null;
+        ball._posX < 0 ? this.stopGame(ball) : null;
         ball._posX > this.canvasDom.width ? this.stopGame(ball) : null;
     },
 
     stopGame(ball) {
 
         let i = this.ballArr.indexOf(ball)
-        if (this.ballArr.length === 1) {
+        if (this.ballArr.length <= 1) {
             clearInterval(this.refresh);
             alert("ESTAS MUERTOOOOO");
         } else {
             i !== -1 ? this.ballArr.splice(i, 1) : null
+
+            console.log(this.ballArr, i, this.ballArr.length)
         }
     },
 
@@ -176,7 +203,21 @@ const seaPong = {
             velX
         );
         this.ballArr.push(newBall)
-
-        //return newBall;
     },
+
+    newObstacle() {
+        let X = Math.floor(Math.random() * ((this.canvasDom.width - 200) - 200) + 200)
+        let Y = Math.floor(Math.random() * ((this.canvasDom.height - 15) - 15) + 15)
+
+        newObstacle = new Obstacle(
+            this.ctx,
+            this.canvasDom.width,
+            this.canvasDom.height,
+            X,
+            Y,
+        )
+
+        this.obsArr.push(newObstacle)
+
+    }
 };
