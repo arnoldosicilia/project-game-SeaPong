@@ -22,6 +22,8 @@ const seaPong = {
         Z: 90,
     },
 
+    ballArr: [],
+
     init() {
         this.canvasDom = document.querySelector('canvas')
         this.ctx = this.canvasDom.getContext('2d')
@@ -32,7 +34,7 @@ const seaPong = {
         this.start()
         this.player1 = new Raquet(this.ctx, this.canvasDom.width, this.canvasDom.height, 30, this.keys.Q, this.keys.Z)
         this.player2 = new Raquet(this.ctx, this.canvasDom.width, this.canvasDom.height, this.canvasDom.width - 30, this.keys.top, this.keys.down)
-        this.ball1 = new Ball(this.ctx, this.canvasDom.width, this.canvasDom.height)
+        this.ball1 = this.newBall()
     },
 
     setDimensions() {
@@ -79,14 +81,16 @@ const seaPong = {
             e.keyCode === 90 ? this.player1.move('DOWN') : null
         }
     },
+
     checkCollision() {
 
-        let p1x = this.player1._posX + 7 //It doesnt let me put the seven like this.player._widht  
+        let p1x = this.player1._posX
+        let p1x2 = this.player1._posX + 7 //It doesnt let me put the seven like this.player._widht  
         let p1y = this.player1._posY
         let p1y2 = this.player1._posY + this.player1._size
 
-
-        let p2x = this.player2._posX //It doesnt let me put the seven like this.player._widht  
+        let p2x = this.player2._posX
+        let p2x2 = this.player2._posX + 7 //It doesnt let me put the seven like this.player._widht  
         let p2y = this.player2._posY
         let p2y2 = this.player2._posY + this.player2._size
 
@@ -94,18 +98,40 @@ const seaPong = {
         let by = this.ball1._posY
         let r = this.ball1._radius
 
-        if (p1x >= bx - r && p1y <= by && p1y2 >= by) {
+        //Player collision
+        if (p1x2 >= bx - r && p1x <= bx && p1y <= by && p1y2 >= by) {
             this.ball1.changeDirection("X")
         }
-        if (p2x <= bx + r && p2y <= by && p2y2 >= by) {
+        if (p2x <= bx + r && p2x2 >= bx && p2y <= by && p2y2 >= by) {
             this.ball1.changeDirection("X")
         }
 
-        // if (this.ball1._posX - this.ball1._radius <= this.player1._posX + this.player1.width || this.ball1._posX + this.ball1._radius >= this.player2._posX - this.player2.width) {
-        //     this.ball1.changeDirection("X")
-        // }
-        // if (this.ball1._posY + this.ball1._radius <= 0 || this.ball1._posY - this.ball1._radius >= this.canvasDom.height) {
-        //     this.ball1.changeDirection("Y")
-        //}
-    }
+        //Limit collision
+        if (by - r < 0 || by + r > this.canvasDom.height) {
+            this.ball1.changeDirection("Y")
+        }
+
+
+    },
+
+    checkBallX() {
+        this.ball1._posX < 0 ? stopGame() : null
+        this.ball1._posX > this.canvasDom.width ? this.stopGame() : null
+    },
+
+    stopGame() {
+        clearInterval(this.refresh)
+        alert("ESTAS MUERTOOOOO")
+    },
+
+    newBall() {
+        let velY = Math.floor(Math.random() * (30 - 3) + 3)
+        let velX = Math.round(Math.random())
+        velX === 0 ? velX = -1 : null
+        let ball1 = new Ball(this.ctx, this.canvasDom.width, this.canvasDom.height, velY, velX)
+        // this.ballArr.push(newBall)
+
+        return ball1
+
+    },
 }
