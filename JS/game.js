@@ -112,12 +112,22 @@ const seaPong = {
     },
 
     checkBallArr() {
-        this.ballArr.forEach(elm => {
-            this.checkCollision(elm);
-            this.checkBallX(elm);
-            //this.newObstacle.obsCheckCollision(elm)
+        this.ballArr.forEach(ball => {
+            this.checkCollision(ball);
+            this.checkBallX(ball);
+            this.obsArr.forEach(obs => {
+
+                let i = this.obsArr.indexOf(obs) //Te da el indice del elemento que estas iterando
+                if (obs.obsCheckCollision(ball) == true) {
+                    console.log("llega el return")
+
+                    i !== -1 ? this.obsArr.splice(i, 1) : null //Esto es para quitar el elemento con el que choca
+                }
+            })
         })
+
     },
+
     checkObsArr() {
         this.obsArr.forEach(elm => {
             elm.obsCheckCollision(this.ballArr)
@@ -186,8 +196,6 @@ const seaPong = {
             alert("ESTAS MUERTOOOOO");
         } else {
             i !== -1 ? this.ballArr.splice(i, 1) : null
-
-            console.log(this.ballArr, i, this.ballArr.length)
         }
     },
 
