@@ -1,4 +1,4 @@
-class Raquet {
+class Player {
   constructor(ctx, w, h, x, kUP, kDWN) {
     this._ctx = ctx;
     this._gameWidth = w;
@@ -10,7 +10,7 @@ class Raquet {
     this._size = 100;
     this.width = 7;
 
-    this._vel = 10;
+    this._vel = 40;
 
     this._keyUP = kUP;
     this._keyDOWN = kDWN;

@@ -15,10 +15,12 @@ class Ball {
     }
 
     draw() {
+        this._ctx.beginPath()
         this._ctx.fillStyle = "white"
         this._ctx.lineWidth = 1
         this._ctx.arc(this._posX, this._posY, 5, 0, Math.PI * 2, false)
         this._ctx.fill()
+        this._ctx.closePath()
     }
     move() {
         this._posX += this._velX
