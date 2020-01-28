@@ -37,6 +37,8 @@ const seaPong = {
     fps: 60,
     framesCounter: 0,
 
+    obstaclesTypes:[Shell,Orca,Octopus],
+
 
 
     // ------------------------------------------------------------------------------------------------------------------
@@ -70,13 +72,10 @@ const seaPong = {
             this.keys2,
         );
         this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
-        this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
-        this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
 
-        this.newObstacle(Shell)
-        this.newObstacle(Octopus)
-        this.newObstacle(Orca)
-            
+        
+        this.newObstacle()
+        
     },
 
     setDimensions() {
@@ -89,28 +88,18 @@ const seaPong = {
     setHandlers() {
         window.onresize = () => this.setDimensions();
     },
-    
-    // setListeners() {
-    //     //This shoud be a method of each player. Will search a better way to do it...
-    //     document.onkeydown = e => {
-    //         e.keyCode === 38 ? this.player2.move("UP") : null;
-    //         e.keyCode === 40 ? this.player2.move("DOWN") : null;
-    //         e.keyCode === 81 ? this.player1.move("UP") : null;
-    //         e.keyCode === 90 ? this.player1.move("DOWN") : null;
-    //     };    
-    // }, 
-        
         
         
     start() {
         this.refresh = setInterval(() => {
             this.framesCounter++; //contador de frames 
             this.framesCounter>5000 ? this.framesCounter = 0 : null
+            this.framesCounter % 500 == 0 ? this.newObstacle() : null
             this.clear()
             this.drawAll();
             this.moveAll();
             this.checkBallArr()
-            
+            this.obstacleTypeSelection()
         }, 1000/this.fps);    
     },    
     
@@ -136,11 +125,13 @@ const seaPong = {
         this.ballArr.push(newBall)
     },
 
-    newObstacle(Type) {
+
+    newObstacle() {
+        let Type = this.obstacleTypeSelection()
         let X = Math.floor(Math.random() * ((this.canvasDom.width - 200) - 200) + 200)
         let Y = Math.floor(Math.random() * ((this.canvasDom.height - 100) - 100) + 100) //Ajustar el 100 al tamaño de las figuritas
 
-        newObstacle = new Type(
+        let newObstacle = new Type(
             this.ctx,
             this.canvasDom.width,
             this.canvasDom.height,
@@ -211,13 +202,12 @@ const seaPong = {
                             break
                         
                         case "Octopus":
-                            this.octopusMethod()
+                            this.octopusMethod(ball._player)
                             break
 
                         case "Orca":
-                            this.orcaMethod()
+                            this.orcaMethod(ball._player)
                             break
-                        
                         
                     }        
                     
@@ -253,9 +243,11 @@ const seaPong = {
         //Player collision
         if (p1x2 >= bx - r && p1x <= bx && p1y <= by && p1y2 >= by) {
             ball.changeDirection("X");
+            ball._player = 1
         }    
         if (p2x <= bx + r && p2x2 >= bx && p2y <= by && p2y2 >= by) {
             ball.changeDirection("X");
+            ball._player = 2
         }    
 
         //Limit collision
@@ -286,9 +278,19 @@ const seaPong = {
 // --------------------------------------          OBSTACLE METHODS            --------------------------------------
 // ------------------------------------------------------------------------------------------------------------------
 
+    obstacleTypeSelection(){
+
+        let i = Math.round(Math.random() * ((this.obstaclesTypes.length-1)))
+
+        return this.obstaclesTypes[i]
+
+    },
+
+
+
     shellMethod(x , y ,velX){  //Duplicates the balls in the same direction they where comming
 
-        let velY = Math.floor(Math.random() * (30 - 3) + 3);
+        let velY = Math.floor(Math.random() * (25 - 5) + 5);
         let newBall = new Ball(
             this.ctx,
             this.canvasDom.width,
@@ -302,25 +304,50 @@ const seaPong = {
     },
 
     octopusMethod(player){ //Makes bigger the player during 7 seconds
+       console.log(player)
+        switch(player){
+            case 1:
+                this.player1._size = 300
+                setTimeout(() => {this.player2._size = 100 },7000 )
+                break
 
-        this.player2._size = 300
-        setTimeout(() => {this.player2._size = 100 },7000 )
-
+            case 2: 
+            this.player2._size = 300
+            setTimeout(() => {this.player2._size = 100 },7000 )
+            break
+        }
 
     },
 
     orcaMethod(player){ //changes the direction buttons during 5 seconds
+      
+
+        switch(player){
+            case 1:
+                this.keys1.top = 90 // Z
+                this.keys1.down = 81 // Q
+
+                setTimeout(() => {
+                this.keys1.top = 81 // Q
+                this.keys1.down = 90 // Z
+                },7000 )
+                break
+
+            case 2 : 
+                this.keys2.top = 40 // dwn
+                this.keys2.down = 38 // up
+
+                setTimeout(() => {
+                this.keys2.top = 38 // up
+                this.keys2.down = 40 // dwn
+                },7000 )
+                break
+
+
+                
+
+        }
         
-        console.log("llamando al metodo Orca")
-
-        this.keys1.top = 90 // Z
-        this.keys1.down = 81 // Q
-
-        setTimeout(() => {
-            this.keys1.top = 81 // Q
-        this.keys1.down = 90 // Z
-     },7000 )
-
     }
 
 };

@@ -30,7 +30,6 @@ class Player {
   setListeners() {
     //This shoud be a method of each player. Will search a better way to do it...
     document.addEventListener("keydown",  e => {
-console.log(e.keyCode)
       switch(e.keyCode){
         case this._keys.top:
           this.move("UP")

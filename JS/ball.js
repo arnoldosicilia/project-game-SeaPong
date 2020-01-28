@@ -1,5 +1,5 @@
 class Ball {
-    constructor(ctx, w, h, velY, dirX, x, y ,gravity) {
+    constructor(ctx, w, h, velY, dirX, x, y , player) {
         this._ctx = ctx
         this._gameWidth = w
         this._gameHeight = h
@@ -8,8 +8,10 @@ class Ball {
         this._posX = x
         this._posY = y
 
-        this._velX = 1 * dirX
+        this._velX = 5 * dirX
         this._velY = velY
+
+        this._player = undefined
 
         this._gravity = undefined
 
