@@ -309,24 +309,18 @@ const seaPong = {
 
     },
 
-    // orcaMethod(player){ //changes the direction buttons during 5 seconds
+    orcaMethod(player){ //changes the direction buttons during 5 seconds
         
-    //     console.log("llamando al metodo Orca")
+        console.log("llamando al metodo Orca")
 
-    //     this.player1._keyUP = this.keys.Z
-    //     this.player1._keyDWN = this.keys.Q
+        this.keys1.top = 90 // Z
+        this.keys1.down = 81 // Q
 
+        setTimeout(() => {
+            this.keys1.top = 81 // Q
+        this.keys1.down = 90 // Z
+     },7000 )
 
-
-
-        // setTimeout(() => {
-        //     this.player1._keyUP = this.keys.Q
-        //     this.player1._keyDWN = this.keys.Z },7000 )
-
-
-        
-        
-
-    //}
+    }
 
 };
