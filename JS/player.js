@@ -1,5 +1,5 @@
 class Player {
-  constructor(ctx, w, h, x, kUP, kDWN, posY) {
+  constructor(ctx, w, h, x,keys) {
     this._ctx = ctx;
     this._gameWidth = w;
     this._gameHeight = h;
@@ -12,8 +12,9 @@ class Player {
 
     this._vel = 40;
 
-    this._keyUP = kUP;
-    this._keyDOWN = kDWN;
+    this._keys = keys
+
+    this.setListeners()
   }
 
   draw() {
@@ -28,14 +29,25 @@ class Player {
 
   setListeners() {
     //This shoud be a method of each player. Will search a better way to do it...
-    document.onkeydown = e => {
-        e.keyCode === 38 ? this.player2.move("UP") : null;
-        e.keyCode === 40 ? this.player2.move("DOWN") : null;
-        e.keyCode === 81 ? this.player1.move("UP") : null;
-        e.keyCode === 90 ? this.player1.move("DOWN") : null;
-    };    
-  } 
+    document.addEventListener("keydown",  e => {
+console.log(e.keyCode)
+      switch(e.keyCode){
+        case this._keys.top:
+          this.move("UP")
+          break
+        
+        case this._keys.down:
+          this.move("DOWN")
+          break
+      }
 
+    });    
+  } 
+  
+  // e.keyCode === 38 ? this.player2.move("UP") : null;
+  // e.keyCode === 40 ? this.player2.move("DOWN") : null;
+  // e.keyCode === 81 ? this.player1.move("UP") : null;
+  // e.keyCode === 90 ? this.player1.move("DOWN") : null;
 
 
   move(direction) {

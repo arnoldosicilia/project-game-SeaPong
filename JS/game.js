@@ -13,12 +13,16 @@ const seaPong = {
         height: undefined
     },
     
-    keys: {
+    keys1: {
+        top: 81,//Q
+        down: 90//Z
+    },
+
+    keys2:{
         top: 38,
         down: 40,
-        Q: 81,
-        Z: 90
     },
+     
     
     ballArr: [],
     obsArr: [],
@@ -45,27 +49,25 @@ const seaPong = {
         this.setDimensions();
         this.setHandlers();
         this.setBackground();
-        this.setListeners();
+        //this.setListeners();
         this.start();
         this.setInstances()
     },
 
-    setInstances() { // All objets that need to be instanced to start the are called here
+    setInstances() {    // All objets that need to be instanced to start the are called here
         this.player1 = new Player(
             this.ctx,
             this.canvasDom.width,
             this.canvasDom.height,
             30,
-            this.keys.Q,
-            this.keys.Z
+            this.keys1,
         );
         this.player2 = new Player(
             this.ctx,
             this.canvasDom.width,
             this.canvasDom.height,
             this.canvasDom.width - 30,
-            this.keys.top,
-            this.keys.down
+            this.keys2,
         );
         this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
         this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
@@ -88,15 +90,15 @@ const seaPong = {
         window.onresize = () => this.setDimensions();
     },
     
-    setListeners() {
-        //This shoud be a method of each player. Will search a better way to do it...
-        document.onkeydown = e => {
-            e.keyCode === 38 ? this.player2.move("UP") : null;
-            e.keyCode === 40 ? this.player2.move("DOWN") : null;
-            e.keyCode === 81 ? this.player1.move("UP") : null;
-            e.keyCode === 90 ? this.player1.move("DOWN") : null;
-        };    
-    }, 
+    // setListeners() {
+    //     //This shoud be a method of each player. Will search a better way to do it...
+    //     document.onkeydown = e => {
+    //         e.keyCode === 38 ? this.player2.move("UP") : null;
+    //         e.keyCode === 40 ? this.player2.move("DOWN") : null;
+    //         e.keyCode === 81 ? this.player1.move("UP") : null;
+    //         e.keyCode === 90 ? this.player1.move("DOWN") : null;
+    //     };    
+    // }, 
         
         
         
@@ -307,21 +309,24 @@ const seaPong = {
 
     },
 
-    orcaMethod(player){ //changes the direction buttons during 5 seconds
+    // orcaMethod(player){ //changes the direction buttons during 5 seconds
         
-        console.log("llamando al metodo Orca")
+    //     console.log("llamando al metodo Orca")
 
-        this.player1._keyUP = this.keys.Z
-        this.player1._keyDWN = this.keys.Q
+    //     this.player1._keyUP = this.keys.Z
+    //     this.player1._keyDWN = this.keys.Q
 
-        setTimeout(() => {
-            this.player1._keyUP = this.keys.Q
-            this.player1._keyDWN = this.keys.Z },7000 )
+
+
+
+        // setTimeout(() => {
+        //     this.player1._keyUP = this.keys.Q
+        //     this.player1._keyDWN = this.keys.Z },7000 )
 
 
         
         
 
-    }
+    //}
 
 };
