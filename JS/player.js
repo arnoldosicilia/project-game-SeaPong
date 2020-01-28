@@ -1,5 +1,5 @@
 class Player {
-  constructor(ctx, w, h, x,keys) {
+  constructor(ctx, w, h, x,keys,lives) {
     this._ctx = ctx;
     this._gameWidth = w;
     this._gameHeight = h;
@@ -14,6 +14,8 @@ class Player {
 
     this._keys = keys
 
+    this._lives = lives
+
     this.setListeners()
   }
 
@@ -25,6 +27,7 @@ class Player {
     this._ctx.lineTo(this._posX, this._posY + this._size);
     this._ctx.stroke();
     this._ctx.closePath();
+    this.drawLives()
   }
 
   setListeners() {
@@ -43,12 +46,6 @@ class Player {
     });    
   } 
   
-  // e.keyCode === 38 ? this.player2.move("UP") : null;
-  // e.keyCode === 40 ? this.player2.move("DOWN") : null;
-  // e.keyCode === 81 ? this.player1.move("UP") : null;
-  // e.keyCode === 90 ? this.player1.move("DOWN") : null;
-
-
   move(direction) {
     if (this._posY <= 0) {
       this._posY = 0; // If we put here this._vel insead of 0 gives a better result but I dont know why
@@ -58,4 +55,12 @@ class Player {
     direction === "UP" ? (this._posY -= this._vel) : null;
     direction === "DOWN" ? (this._posY += this._vel) : null;
   }
+
+  drawLives(){
+    this._ctx.font = "40px sans-serif"
+    this._ctx.fillStyle = "red";
+    this._ctx.fillText(this._lives,this._posX,40,50);
+  }
+
+  
 }

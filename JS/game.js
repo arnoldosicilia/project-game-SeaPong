@@ -38,6 +38,7 @@ const seaPong = {
     framesCounter: 0,
 
     obstaclesTypes:[Shell,Orca,Octopus],
+    lives: 5,
 
 
 
@@ -63,6 +64,7 @@ const seaPong = {
             this.canvasDom.height,
             30,
             this.keys1,
+            this.lives,
         );
         this.player2 = new Player(
             this.ctx,
@@ -70,6 +72,7 @@ const seaPong = {
             this.canvasDom.height,
             this.canvasDom.width - 30,
             this.keys2,
+            this.lives,
         );
         this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
 
@@ -210,7 +213,6 @@ const seaPong = {
                             break
                         
                     }        
-                    
 
                 i !== -1 ? this.obsArr.splice(i, 1) : null //this takes out the obstacle from the obsArray    
                 }
@@ -290,13 +292,13 @@ const seaPong = {
 
     shellMethod(x , y ,velX){  //Duplicates the balls in the same direction they where comming
 
-        let velY = Math.floor(Math.random() * (25 - 5) + 5);
+        let velY = Math.floor(Math.random() * (10 - 5) + 5);
         let newBall = new Ball(
             this.ctx,
             this.canvasDom.width,
             this.canvasDom.height,
             velY,
-            velX/10,
+            velX/5,
             x,
             y,
         );
@@ -304,16 +306,16 @@ const seaPong = {
     },
 
     octopusMethod(player){ //Makes bigger the player during 7 seconds
-       console.log(player)
+       
         switch(player){
             case 1:
                 this.player1._size = 300
-                setTimeout(() => {this.player2._size = 100 },7000 )
+                setTimeout(() => {this.player2._size = 100 },5000 )
                 break
 
             case 2: 
             this.player2._size = 300
-            setTimeout(() => {this.player2._size = 100 },7000 )
+            setTimeout(() => {this.player2._size = 100 },5000 )
             break
         }
 
