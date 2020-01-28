@@ -34,7 +34,7 @@ class Player {
         e.keyCode === 81 ? this.player1.move("UP") : null;
         e.keyCode === 90 ? this.player1.move("DOWN") : null;
     };    
-} 
+  } 
 
 
 
