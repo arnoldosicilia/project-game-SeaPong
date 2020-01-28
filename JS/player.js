@@ -1,5 +1,5 @@
 class Player {
-  constructor(ctx, w, h, x, kUP, kDWN) {
+  constructor(ctx, w, h, x, kUP, kDWN, posY) {
     this._ctx = ctx;
     this._gameWidth = w;
     this._gameHeight = h;
@@ -26,11 +26,23 @@ class Player {
     this._ctx.closePath();
   }
 
+  setListeners() {
+    //This shoud be a method of each player. Will search a better way to do it...
+    document.onkeydown = e => {
+        e.keyCode === 38 ? this.player2.move("UP") : null;
+        e.keyCode === 40 ? this.player2.move("DOWN") : null;
+        e.keyCode === 81 ? this.player1.move("UP") : null;
+        e.keyCode === 90 ? this.player1.move("DOWN") : null;
+    };    
+} 
+
+
+
   move(direction) {
     if (this._posY <= 0) {
       this._posY = 0; // If we put here this._vel insead of 0 gives a better result but I dont know why
-    } else if (this._posY > this._gameHeight - 100) {
-      this._posY = this._gameHeight - 100;
+    } else if (this._posY > this._gameHeight - this._size) {
+      this._posY = this._gameHeight - this._size;
     }
     direction === "UP" ? (this._posY -= this._vel) : null;
     direction === "DOWN" ? (this._posY += this._vel) : null;

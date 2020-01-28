@@ -5,7 +5,7 @@ class Background {
         this._height = h
 
         this._image = new Image()
-        this._image.src = "../game/images/seabg.jpg"
+        this._image.src = "../game//images/seabg.jpg"
     }
 
     draw() {

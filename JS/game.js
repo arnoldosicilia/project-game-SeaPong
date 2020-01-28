@@ -8,28 +8,36 @@ const seaPong = {
     canvasDom: undefined,
     ctx: undefined,
 
-    fpsCounter: 0,
     wSize: {
         width: undefined,
         height: undefined
     },
-
+    
     keys: {
         top: 38,
         down: 40,
         Q: 81,
         Z: 90
     },
-
+    
     ballArr: [],
     obsArr: [],
-
+    
     obstacleType: ["../game/images/octopus.png",
-        "../game/images/orca.png",
-        "../game/images/tortoise.png",
-        "../game/images/jellyfish.png",
-        "../game/images/shell.svg"
+    "../game/images/orca.png",
+    "../game/images/tortoise.png",
+    "../game/images/jellyfish.png",
+    "../game/images/shell.svg"
     ],
+
+    fps: 60,
+    framesCounter: 0,
+
+
+
+    // ------------------------------------------------------------------------------------------------------------------
+    // --------------------------------------       STARTING THE GAME              --------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
 
     init() {
         this.canvasDom = document.querySelector("canvas");
@@ -59,12 +67,14 @@ const seaPong = {
             this.keys.top,
             this.keys.down
         );
-        this.newBall();
-        this.newBall();
-        this.newBall();
+        this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
+        this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
+        this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
 
-        this.newObstacle()
-
+        this.newObstacle(Shell)
+        this.newObstacle(Octopus)
+        this.newObstacle(Orca)
+            
     },
 
     setDimensions() {
@@ -73,77 +83,11 @@ const seaPong = {
         this.canvasDom.width = this.wSize.width;
         this.canvasDom.height = this.wSize.height * 0.9;
     },
-
+    
     setHandlers() {
         window.onresize = () => this.setDimensions();
     },
-
-    start() {
-        this.refresh = setInterval(() => {
-            this.clear()
-            this.drawAll();
-            this.moveAll();
-            this.checkBallArr()
-            this.checkObsArr()
-        }, 100);
-    },
-
-    drawAll() {
-        this.setBackground(); //This makes the background to adapt to the windos sizes
-        this.player1.draw();
-        this.player2.draw();
-        this.ballArr.forEach(elm => { //This drams all de balls in the ballArr
-            elm.draw()
-        })
-        this.obsArr.forEach(elm => {
-            elm.draw()
-        })
-
-    },
-
-    moveAll() {
-        this.ballArr.forEach(elm => {
-            elm.move()
-        })
-    },
-
-    clear() {
-        this.ctx.clearRect(0, 0, this.canvasDom.width, this.canvasDom.height)
-    },
-
-    checkBallArr() {
-        this.ballArr.forEach(ball => {
-            this.checkCollision(ball);
-            this.checkBallX(ball);
-            this.obsArr.forEach(obs => {
-
-                let i = this.obsArr.indexOf(obs) //Te da el indice del elemento que estas iterando
-                if (obs.obsCheckCollision(ball) == true) {
-                    console.log("llega el return")
-
-                    i !== -1 ? this.obsArr.splice(i, 1) : null //Esto es para quitar el elemento con el que choca
-                }
-            })
-        })
-
-    },
-
-    checkObsArr() {
-        this.obsArr.forEach(elm => {
-            elm.obsCheckCollision(this.ballArr)
-        })
-
-    },
-
-
-    setBackground() {
-        this.background = new Background(
-            this.ctx,
-            this.wSize.width,
-            this.wSize.height
-        );
-        this.background.draw();
-    },
+    
     setListeners() {
         //This shoud be a method of each player. Will search a better way to do it...
         document.onkeydown = e => {
@@ -151,8 +95,143 @@ const seaPong = {
             e.keyCode === 40 ? this.player2.move("DOWN") : null;
             e.keyCode === 81 ? this.player1.move("UP") : null;
             e.keyCode === 90 ? this.player1.move("DOWN") : null;
-        };
+        };    
+    }, 
+        
+        
+        
+    start() {
+        this.refresh = setInterval(() => {
+            this.framesCounter++; //contador de frames 
+            this.framesCounter>5000 ? this.framesCounter = 0 : null
+            this.clear()
+            this.drawAll();
+            this.moveAll();
+            this.checkBallArr()
+            
+        }, 1000/this.fps);    
+    },    
+    
+        
+        
+    // ------------------------------------------------------------------------------------------------------------------
+    // --------------------------------------         OBJECTS CREATORS             --------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+
+    newBall(x,y) {
+        let velY = Math.floor(Math.random() * (5 - 2) + 2);
+        let velX = Math.round(Math.random());
+        velX === 0 ? (velX = -1) : null;
+        let newBall = new Ball(
+            this.ctx,
+            this.canvasDom.width,
+            this.canvasDom.height,
+            velY,
+            velX,
+            x,
+            y,
+        );
+        this.ballArr.push(newBall)
     },
+
+    newObstacle(Type) {
+        let X = Math.floor(Math.random() * ((this.canvasDom.width - 200) - 200) + 200)
+        let Y = Math.floor(Math.random() * ((this.canvasDom.height - 100) - 100) + 100) //Ajustar el 100 al tamaño de las figuritas
+
+        newObstacle = new Type(
+            this.ctx,
+            this.canvasDom.width,
+            this.canvasDom.height,
+            X,
+            Y,
+        )
+
+        this.obsArr.push(newObstacle)
+
+    },
+
+       
+        
+    
+// ------------------------------------------------------------------------------------------------------------------    
+// --------------------------------------   METHODS CALLED IN START INTERVAL   --------------------------------------
+// ------------------------------------------------------------------------------------------------------------------
+
+    clear() {
+        this.ctx.clearRect(0, 0, this.canvasDom.width, this.canvasDom.height)
+    },    
+
+
+    drawAll() {
+        this.setBackground(); //This makes the background to adapt to the windos sizes
+        this.player1.draw();
+        this.player2.draw();
+        this.ballArr.forEach(elm => { //This drams all de balls in the ballArr
+            elm.draw()
+        })    
+        this.obsArr.forEach(elm => {
+            elm.draw()
+        })    
+
+    },    
+
+    setBackground() {
+        this.background = new Background(
+            this.ctx,
+            this.wSize.width,
+            this.wSize.height
+        );    
+        this.background.draw();
+    },    
+
+
+    moveAll() {
+        this.ballArr.forEach(elm => {
+            elm.move()
+        })    
+    },    
+
+    checkBallArr() {
+        this.ballArr.forEach(ball => {
+
+            this.checkCollision(ball);
+            this.checkBallX(ball);
+            
+            
+            this.obsArr.forEach(obs => {
+
+                let i = this.obsArr.indexOf(obs) // Gives the index of the obstacle that the ball is hitting
+                if (obs.obsCheckCollision(ball) == true) {
+
+                    switch(obs._id){
+                        case "Shell":
+                            this.shellMethod(ball._posX,ball._posY, ball._velX)
+                            break
+                        
+                        case "Octopus":
+                            this.octopusMethod()
+                            break
+
+                        case "Orca":
+                            this.orcaMethod()
+                            break
+                        
+                        
+                    }        
+                    
+
+                i !== -1 ? this.obsArr.splice(i, 1) : null //this takes out the obstacle from the obsArray    
+                }
+            })    
+        })    
+
+    },    
+
+
+// ------------------------------------------------------------------------------------------------------------------    
+// --------------------------------------       CHECK BALL COLLISIONS          --------------------------------------
+// ------------------------------------------------------------------------------------------------------------------
+
 
     checkCollision(ball) {
         let p1x = this.player1._posX;
@@ -172,21 +251,21 @@ const seaPong = {
         //Player collision
         if (p1x2 >= bx - r && p1x <= bx && p1y <= by && p1y2 >= by) {
             ball.changeDirection("X");
-        }
+        }    
         if (p2x <= bx + r && p2x2 >= bx && p2y <= by && p2y2 >= by) {
             ball.changeDirection("X");
-        }
+        }    
 
         //Limit collision
         if (by - r < 0 || by + r > this.canvasDom.height) {
             ball.changeDirection("Y");
-        }
-    },
+        }    
+    },    
 
     checkBallX(ball) {
         ball._posX < 0 ? this.stopGame(ball) : null;
         ball._posX > this.canvasDom.width ? this.stopGame(ball) : null;
-    },
+    },    
 
     stopGame(ball) {
 
@@ -196,36 +275,53 @@ const seaPong = {
             alert("ESTAS MUERTOOOOO");
         } else {
             i !== -1 ? this.ballArr.splice(i, 1) : null
-        }
-    },
+        }    
+    },    
 
-    newBall() {
+    
+
+// ------------------------------------------------------------------------------------------------------------------
+// --------------------------------------          OBSTACLE METHODS            --------------------------------------
+// ------------------------------------------------------------------------------------------------------------------
+
+    shellMethod(x , y ,velX){  //Duplicates the balls in the same direction they where comming
+
         let velY = Math.floor(Math.random() * (30 - 3) + 3);
-        let velX = Math.round(Math.random());
-        velX === 0 ? (velX = -1) : null;
         let newBall = new Ball(
             this.ctx,
             this.canvasDom.width,
             this.canvasDom.height,
             velY,
-            velX
+            velX/10,
+            x,
+            y,
         );
         this.ballArr.push(newBall)
     },
 
-    newObstacle() {
-        let X = Math.floor(Math.random() * ((this.canvasDom.width - 200) - 200) + 200)
-        let Y = Math.floor(Math.random() * ((this.canvasDom.height - 15) - 15) + 15)
+    octopusMethod(player){ //Makes bigger the player during 7 seconds
 
-        newObstacle = new Obstacle(
-            this.ctx,
-            this.canvasDom.width,
-            this.canvasDom.height,
-            X,
-            Y,
-        )
+        this.player2._size = 300
+        setTimeout(() => {this.player2._size = 100 },7000 )
 
-        this.obsArr.push(newObstacle)
+
+    },
+
+    orcaMethod(player){ //changes the direction buttons during 5 seconds
+        
+        console.log("llamando al metodo Orca")
+
+        this.player1._keyUP = this.keys.Z
+        this.player1._keyDWN = this.keys.Q
+
+        setTimeout(() => {
+            this.player1._keyUP = this.keys.Q
+            this.player1._keyDWN = this.keys.Z },7000 )
+
+
+        
+        
 
     }
+
 };

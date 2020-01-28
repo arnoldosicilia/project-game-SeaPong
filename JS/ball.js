@@ -1,15 +1,17 @@
 class Ball {
-    constructor(ctx, w, h, velY, dirX) {
+    constructor(ctx, w, h, velY, dirX, x, y ,gravity) {
         this._ctx = ctx
         this._gameWidth = w
         this._gameHeight = h
 
         this._radius = 5
-        this._posX = this._gameWidth / 2
-        this._posY = this._gameHeight / 2
+        this._posX = x
+        this._posY = y
 
-        this._velX = 10 * dirX
+        this._velX = 1 * dirX
         this._velY = velY
+
+        this._gravity = undefined
 
 
     }

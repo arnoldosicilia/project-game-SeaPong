@@ -6,8 +6,8 @@ class Obstacle {
 
         this._posX = x
         this._posY = y
-        this._width = 70
-        this._height = 50
+        this._width = 100
+        this._height = 100
 
         this._image = new Image()
         this._image.src = "../game/images/shell.svg"
@@ -29,15 +29,13 @@ class Obstacle {
 
 
         if (ox2 >= bx - r && ox <= bx && oy <= by && oy2 >= by) {
-            console.log("ha chocadooo1")
 
-            this.property();
+            
             return true
         }
 
     }
-    property() {
-
-        console.log("ha chocadooo")
-    }
+        
+        
+    
 }
