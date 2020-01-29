@@ -55,6 +55,8 @@ const seaPong = {
         //this.setListeners();
         this.start();
         this.setInstances()
+        
+        
     },
 
     setInstances() {    // All objets that need to be instanced to start the are called here
@@ -75,13 +77,19 @@ const seaPong = {
             this.canvasDom.width-30,
             this.keys2,
             this.lives,
-            this.canvasDom.width-90,
+            this.canvasDom.width-100,
             "../game/sounds/player2.mp3",
         );
         this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
 
-        
         this.newObstacle()
+        
+        this.gameOver = new Gameover(
+            this.ctx,
+            this.wSize.width,
+            this.wSize.height
+            )
+        
         
     },
 
@@ -106,6 +114,7 @@ const seaPong = {
             this.drawAll();
             this.moveAll();
             this.checkBallArr()
+            this.checkFinishGame()
             this.obstacleTypeSelection()
         }, 1000/this.fps);    
     },    
@@ -226,6 +235,42 @@ const seaPong = {
     },    
 
 
+    checkFinishGame(){
+
+        if (this.ballArr.length == 0){
+            clearInterval(this.refresh);
+            if(this.player1._lives > this.player2._lives){
+
+                this.gameOver.draw("PLAYER 1")
+
+            } else if (this.player1._lives < this.player2._lives){
+
+                this.gameOver.draw("PLAYER 2")
+            } else {
+                this.gameOver.draw("")
+            }
+        }
+
+
+
+
+
+
+    //     if (this.player1._lives == 0) {
+
+    //         clearInterval(this.refresh);
+
+    //         this.gameOver.draw("PLAYER 2")
+
+
+    //     } else if (this.player2._lives == 0){
+    //         clearInterval(this.refresh);
+
+    //         this.gameOver.draw("PLAYER 1")
+    //     }
+    },
+
+
 // ------------------------------------------------------------------------------------------------------------------    
 // --------------------------------------       CHECK BALL COLLISIONS          --------------------------------------
 // ------------------------------------------------------------------------------------------------------------------
@@ -265,12 +310,12 @@ const seaPong = {
     },    
 
     checkBallX(ball) {
-        ball._posX < 0 ? this.stopGame(ball , 1) : null;
-        ball._posX > this.canvasDom.width ? this.stopGame(ball , 2) : null;
+        ball._posX < 0 ? this.substractPoints(ball , 1) : null;
+        ball._posX > this.canvasDom.width ? this.substractPoints(ball , 2) : null;
     },    
     
     
-    stopGame(ball, player) {
+    substractPoints(ball, player) {
 
         let i = this.ballArr.indexOf(ball)
 
@@ -280,13 +325,7 @@ const seaPong = {
         i !== -1 ? this.ballArr.splice(i, 1) : null
         
 
-        if (this.player1._lives == 0) {
-            clearInterval(this.refresh);
-            alert("EL JUGADOR 1 HA PERDIDO");
-        } else if (this.player2._lives == 0){
-            clearInterval(this.refresh);
-            alert("EL JUGADOR 2 HA PERDIDO");
-        }    
+            
     },    
 
     

@@ -8,8 +8,8 @@ class Ball {
         this._posX = x
         this._posY = y
 
-        this._velX = 20 * dirX
-        this._velY = 0//velY
+        this._velX = 5 * dirX
+        this._velY = velY
 
         this._player = undefined
 

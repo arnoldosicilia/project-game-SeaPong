@@ -62,7 +62,7 @@ class Player {
   drawLives(){
     this._ctx.font = "bold 30px sans-serif"
     this._ctx.fillStyle = "red";
-    this._ctx.fillText("PTS:  " + this._lives,this._scoreX, 50, 50);
+    this._ctx.fillText("PTS:  " + this._lives,this._scoreX, 50, 70);
   }
   
   
