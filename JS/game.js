@@ -38,7 +38,7 @@ const seaPong = {
     framesCounter: 0,
 
     obstaclesTypes:[Shell,Orca,Octopus],
-    lives: 5,
+    lives: 1,
 
 
 
@@ -201,7 +201,7 @@ const seaPong = {
 
                     switch(obs._id){
                         case "Shell":
-                            this.shellMethod(ball._posX,ball._posY, ball._velX)
+                            this.shellMethod(ball._posX,ball._posY, ball._velX, ball._player)
                             break
                         
                         case "Octopus":
@@ -259,18 +259,27 @@ const seaPong = {
     },    
 
     checkBallX(ball) {
-        ball._posX < 0 ? this.stopGame(ball) : null;
-        ball._posX > this.canvasDom.width ? this.stopGame(ball) : null;
+        ball._posX < 0 ? this.stopGame(ball , 1) : null;
+        ball._posX > this.canvasDom.width ? this.stopGame(ball , 2) : null;
     },    
-
-    stopGame(ball) {
+    
+    
+    stopGame(ball, player) {
 
         let i = this.ballArr.indexOf(ball)
-        if (this.ballArr.length <= 1) {
+
+        player == 1 ? this.player1._lives -= 1 : null
+        player == 2 ? this.player2._lives -= 1 : null 
+        
+        i !== -1 ? this.ballArr.splice(i, 1) : null
+        
+
+        if (this.player1._lives == 0) {
             clearInterval(this.refresh);
-            alert("ESTAS MUERTOOOOO");
-        } else {
-            i !== -1 ? this.ballArr.splice(i, 1) : null
+            alert("EL JUGADOR 1 HA PERDIDO");
+        } else if (this.player2._lives == 0){
+            clearInterval(this.refresh);
+            alert("EL JUGADOR 2 HA PERDIDO");
         }    
     },    
 
@@ -290,9 +299,13 @@ const seaPong = {
 
 
 
-    shellMethod(x , y ,velX){  //Duplicates the balls in the same direction they where comming
+    shellMethod(x , y ,velX,player){  //Duplicates the balls in the same direction they where comming
 
+        player == 1 ? this.player1._lives += 1 : null
+        player == 2 ? this.player2._lives += 1 : null 
+        
         let velY = Math.floor(Math.random() * (10 - 5) + 5);
+
         let newBall = new Ball(
             this.ctx,
             this.canvasDom.width,
@@ -344,9 +357,6 @@ const seaPong = {
                 this.keys2.down = 40 // dwn
                 },7000 )
                 break
-
-
-                
 
         }
         
