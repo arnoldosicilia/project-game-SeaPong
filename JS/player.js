@@ -1,5 +1,5 @@
 class Player {
-  constructor(ctx, w, h, x,keys,lives) {
+  constructor(ctx, w, h, x,keys,lives,scoreX,src) {
     this._ctx = ctx;
     this._gameWidth = w;
     this._gameHeight = h;
@@ -15,7 +15,10 @@ class Player {
     this._keys = keys
 
     this._lives = lives
+    this._scoreX= scoreX
 
+
+    this._audioColission = new Audio(src)
     this.setListeners()
   }
 
@@ -57,10 +60,10 @@ class Player {
   }
 
   drawLives(){
-    this._ctx.font = "40px sans-serif"
+    this._ctx.font = "bold 30px sans-serif"
     this._ctx.fillStyle = "red";
-    this._ctx.fillText(this._lives,this._posX,40,50);
+    this._ctx.fillText("PTS:  " + this._lives,this._scoreX, 50, 50);
   }
-
+  
   
 }

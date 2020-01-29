@@ -65,14 +65,18 @@ const seaPong = {
             30,
             this.keys1,
             this.lives,
+            40,
+            "../game/sounds/player1.mp3",
         );
         this.player2 = new Player(
             this.ctx,
             this.canvasDom.width,
             this.canvasDom.height,
-            this.canvasDom.width - 30,
+            this.canvasDom.width-30,
             this.keys2,
             this.lives,
+            this.canvasDom.width-90,
+            "../game/sounds/player2.mp3",
         );
         this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
 
@@ -246,10 +250,12 @@ const seaPong = {
         if (p1x2 >= bx - r && p1x <= bx && p1y <= by && p1y2 >= by) {
             ball.changeDirection("X");
             ball._player = 1
+            this.player1._audioColission.play()
         }    
         if (p2x <= bx + r && p2x2 >= bx && p2y <= by && p2y2 >= by) {
             ball.changeDirection("X");
             ball._player = 2
+            this.player2._audioColission.play()
         }    
 
         //Limit collision
@@ -323,7 +329,7 @@ const seaPong = {
         switch(player){
             case 1:
                 this.player1._size = 300
-                setTimeout(() => {this.player2._size = 100 },5000 )
+                setTimeout(() => {this.player1._size = 100 },5000 )
                 break
 
             case 2: 
