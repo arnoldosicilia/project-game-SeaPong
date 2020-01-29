@@ -53,8 +53,9 @@ const seaPong = {
         this.setHandlers();
         this.setBackground();
         //this.setListeners();
-        this.start();
-        this.setInstances()
+        setTimeout(()=> this.start(),3000);
+        this.setInstances();
+        this.setBackground()
         
         
     },
@@ -215,6 +216,7 @@ const seaPong = {
                     switch(obs._id){
                         case "Shell":
                             this.shellMethod(ball._posX,ball._posY, ball._velX, ball._player)
+                            obs._audioCollision.play()
                             break
                         
                         case "Octopus":
@@ -251,23 +253,6 @@ const seaPong = {
             }
         }
 
-
-
-
-
-
-    //     if (this.player1._lives == 0) {
-
-    //         clearInterval(this.refresh);
-
-    //         this.gameOver.draw("PLAYER 2")
-
-
-    //     } else if (this.player2._lives == 0){
-    //         clearInterval(this.refresh);
-
-    //         this.gameOver.draw("PLAYER 1")
-    //     }
     },
 
 
@@ -361,6 +346,7 @@ const seaPong = {
             y,
         );
         this.ballArr.push(newBall)
+        
     },
 
     octopusMethod(player){ //Makes bigger the player during 7 seconds

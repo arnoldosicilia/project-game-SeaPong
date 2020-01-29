@@ -5,6 +5,7 @@ class Shell extends Obstacle {
         this._image = new Image()    
         this._image.src = "../game/images/shell.svg"
         
+        this._audioCollision = new Audio("../dame/sounds/liveup.mp3")
         this._id = "Shell"
 
     }

@@ -3,6 +3,27 @@
     padding: 0
 }
 
+#startScreen {
+    background-image: url("../game/images/startImage.png");
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#start-button {
+    font-size: 50px;
+    color: white;
+    background-color: #2a0ea8;
+    padding: 20px 50px;
+    border-radius: 20px;
+    margin-left: 760px;
+    margin-top: 575px
+}
+
 #seaPong {
     margin: 20px 0px;
 
