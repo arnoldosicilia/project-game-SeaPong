@@ -40,6 +40,9 @@ const seaPong = {
     obstaclesTypes:[Shell,Orca,Octopus],
     lives: 1,
 
+    startTimeOut: 100,
+
+
 
 
     // ------------------------------------------------------------------------------------------------------------------
@@ -51,16 +54,26 @@ const seaPong = {
         this.ctx = this.canvasDom.getContext("2d");
         this.setDimensions();
         this.setHandlers();
-        this.setBackground();
-        //this.setListeners();
-        setTimeout(()=> this.start(),3000);
+        this.audioGame = document.createElement("audio")
+        this.audioGame.src = "../game/sounds/song.mp3"
+        this.audioGame.volume = 0.3
+        this.audioGame.play()
         this.setInstances();
-        this.setBackground()
+        this.background.draw();
+        this.player1.draw();
+        this.player2.draw();
+        this.start()
         
         
     },
 
     setInstances() {    // All objets that need to be instanced to start the are called here
+        this.background = new Background(
+            this.ctx,
+            this.wSize.width,
+            this.wSize.height
+        );    
+        
         this.player1 = new Player(
             this.ctx,
             this.canvasDom.width,
@@ -81,7 +94,8 @@ const seaPong = {
             this.canvasDom.width-100,
             "../game/sounds/player2.mp3",
         );
-        this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2);
+            
+        
 
         this.newObstacle()
         
@@ -89,7 +103,7 @@ const seaPong = {
             this.ctx,
             this.wSize.width,
             this.wSize.height
-            )
+            ) 
         
         
     },
@@ -109,13 +123,14 @@ const seaPong = {
     start() {
         this.refresh = setInterval(() => {
             this.framesCounter++; //contador de frames 
+            this.framesCounter == this.startTimeOut ? this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2) : null
             this.framesCounter>5000 ? this.framesCounter = 0 : null
             this.framesCounter % 500 == 0 ? this.newObstacle() : null
+            
             this.clear()
             this.drawAll();
             this.moveAll();
-            this.checkBallArr()
-            this.checkFinishGame()
+            this.framesCounter > this.startTimeOut ? this.checkAll() : null
             this.obstacleTypeSelection()
         }, 1000/this.fps);    
     },    
@@ -127,6 +142,7 @@ const seaPong = {
     // ------------------------------------------------------------------------------------------------------------------
 
     newBall(x,y) {
+        
         let velY = Math.floor(Math.random() * (5 - 2) + 2);
         let velX = Math.round(Math.random());
         velX === 0 ? (velX = -1) : null;
@@ -173,33 +189,32 @@ const seaPong = {
 
 
     drawAll() {
-        this.setBackground(); //This makes the background to adapt to the windos sizes
+        
+        this.background.draw();
         this.player1.draw();
         this.player2.draw();
-        this.ballArr.forEach(elm => { //This drams all de balls in the ballArr
-            elm.draw()
-        })    
+        if(this.ballArr.length > 0) {
+            
+            this.ballArr.forEach(elm => { //This draw all the balls in the ballArr
+                elm.draw()
+        }) 
+        }  
         this.obsArr.forEach(elm => {
             elm.draw()
         })    
 
-    },    
-
-    setBackground() {
-        this.background = new Background(
-            this.ctx,
-            this.wSize.width,
-            this.wSize.height
-        );    
-        this.background.draw();
-    },    
-
+    },          
 
     moveAll() {
         this.ballArr.forEach(elm => {
             elm.move()
         })    
     },    
+
+    checkAll(){ // Let us check the balls when the balls appear
+        this.checkBallArr()
+        this.checkFinishGame()
+    },
 
     checkBallArr() {
         this.ballArr.forEach(ball => {
@@ -215,16 +230,15 @@ const seaPong = {
 
                     switch(obs._id){
                         case "Shell":
-                            this.shellMethod(ball._posX,ball._posY, ball._velX, ball._player)
-                            obs._audioCollision.play()
+                            this.shellMethod(obs,ball._posX,ball._posY, ball._velX, ball._player)
                             break
                         
                         case "Octopus":
-                            this.octopusMethod(ball._player)
+                            this.octopusMethod(obs, ball._player)
                             break
 
                         case "Orca":
-                            this.orcaMethod(ball._player)
+                            this.orcaMethod(obs, ball._player)
                             break
                         
                     }        
@@ -239,17 +253,24 @@ const seaPong = {
 
     checkFinishGame(){
 
+
         if (this.ballArr.length == 0){
-            clearInterval(this.refresh);
+            clearInterval(this.refresh)
+            this.audioGame.pause()
+            ;
             if(this.player1._lives > this.player2._lives){
 
                 this.gameOver.draw("PLAYER 1")
+                this.gameOver._audio.play()
 
             } else if (this.player1._lives < this.player2._lives){
 
                 this.gameOver.draw("PLAYER 2")
+                this.gameOver._audio.play()
+
             } else {
                 this.gameOver.draw("")
+                this.gameOver._audio.play()
             }
         }
 
@@ -329,8 +350,9 @@ const seaPong = {
 
 
 
-    shellMethod(x , y ,velX,player){  //Duplicates the balls in the same direction they where comming
-
+    shellMethod(obs, x , y ,velX,player){  //Duplicates the balls in the same direction they where comming
+        let obj =obs
+        obj._audioCollision.play()
         player == 1 ? this.player1._lives += 1 : null
         player == 2 ? this.player2._lives += 1 : null 
         
@@ -347,26 +369,38 @@ const seaPong = {
         );
         this.ballArr.push(newBall)
         
+        
     },
 
-    octopusMethod(player){ //Makes bigger the player during 7 seconds
+    octopusMethod(obs, player){ //Makes bigger the player during 7 seconds
        
+        let obj = obs
+       obj._audioStart.play()
+
         switch(player){
             case 1:
                 this.player1._size = 300
-                setTimeout(() => {this.player1._size = 100 },5000 )
+                setTimeout(() => {
+                    this.player1._size = 100
+                    obj._audioFinish.play()
+                 },5000 )
                 break
 
             case 2: 
-            this.player2._size = 300
-            setTimeout(() => {this.player2._size = 100 },5000 )
-            break
+                this.player2._size = 300
+                setTimeout(() => {
+                    this.player2._size = 100 
+                    obj._audioFinish.play()
+                },5000 )
+                break
         }
 
     },
 
-    orcaMethod(player){ //changes the direction buttons during 5 seconds
+    orcaMethod(obs,player){ //changes the direction buttons during 5 seconds
       
+        let obj = obs
+        obj._audioStart.play()
 
         switch(player){
             case 1:
@@ -376,6 +410,7 @@ const seaPong = {
                 setTimeout(() => {
                 this.keys1.top = 81 // Q
                 this.keys1.down = 90 // Z
+                obj._audioFinish.play()
                 },7000 )
                 break
 
@@ -386,6 +421,7 @@ const seaPong = {
                 setTimeout(() => {
                 this.keys2.top = 38 // up
                 this.keys2.down = 40 // dwn
+                obj._audioFinish.play()
                 },7000 )
                 break
 

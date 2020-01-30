@@ -5,12 +5,16 @@ class Shell extends Obstacle {
         this._image = new Image()    
         this._image.src = "../game/images/shell.svg"
         
-        this._audioCollision = new Audio("../dame/sounds/liveup.mp3")
+        this._audioCollision = new Audio("../game/sounds/liveup.mp3")
+        
+
         this._id = "Shell"
+        
 
     }
 
     draw() {
+        console.log(this._audioCollision)
         this._ctx.drawImage(this._image, this._posX, this._posY, this._width, this._height)
     }
     

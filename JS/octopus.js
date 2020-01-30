@@ -5,6 +5,9 @@ class Octopus extends Obstacle {
         this._image = new Image()    
         this._image.src = "../game/images/octopus.png"
         
+        this._audioStart = new Audio("../game/sounds/liveup.mp3")
+        this._audioFinish = new Audio("../game/sounds/liveup.mp3")
+
         this._id = "Octopus"
 
     }
