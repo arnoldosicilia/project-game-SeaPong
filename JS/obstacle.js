@@ -6,8 +6,8 @@ class Obstacle {
 
         this._posX = x
         this._posY = y
-        this._width = 100
-        this._height = 100
+        this._width = 70
+        this._height = 80
 
         this._image = new Image()
         this._image.src = "../game/images/shell.svg"

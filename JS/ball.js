@@ -13,10 +13,10 @@ class Ball {
 
         this._player = undefined
 
-        this._gravity = undefined
-
+        this._gravity = 0 // no puede ser udefinde porque si no no se pinta.
 
     }
+    
 
     draw() {
         this._ctx.beginPath()
@@ -27,8 +27,10 @@ class Ball {
         this._ctx.closePath()
     }
     move() {
+        
         this._posX += this._velX
         this._posY += this._velY
+        this._velY += this._gravity
     }
     changeDirection(axis) {
         axis === "X" ? this._velX *= -1 : null

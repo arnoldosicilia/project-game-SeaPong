@@ -27,17 +27,17 @@ const seaPong = {
     ballArr: [],
     obsArr: [],
     
-    obstacleType: ["../game/images/octopus.png",
-    "../game/images/orca.png",
-    "../game/images/tortoise.png",
-    "../game/images/jellyfish.png",
-    "../game/images/shell.svg"
-    ],
+    // obstacleType: ["../game/images/octopus.png",
+    // "../game/images/orca.png",
+    // "../game/images/tortoise.png",
+    // "../game/images/jellyfish.png",
+    // "../game/images/shell.svg"
+    // ],
 
     fps: 60,
     framesCounter: 0,
 
-    obstaclesTypes:[Shell,Orca,Octopus],
+    obstaclesTypes:[Shell,Orca,Octopus,Tortoise,Jellyfish],
     lives: 1,
 
     startTimeOut: 100,
@@ -54,6 +54,7 @@ const seaPong = {
         this.ctx = this.canvasDom.getContext("2d");
         this.setDimensions();
         this.setHandlers();
+        this.player1Name= document.querySelector("#player1 ")
         this.audioGame = document.createElement("audio")
         this.audioGame.src = "../game/sounds/song.mp3"
         this.audioGame.volume = 0.3
@@ -62,9 +63,7 @@ const seaPong = {
         this.background.draw();
         this.player1.draw();
         this.player2.draw();
-        this.start()
-        
-        
+        this.start()   
     },
 
     setInstances() {    // All objets that need to be instanced to start the are called here
@@ -94,8 +93,6 @@ const seaPong = {
             this.canvasDom.width-100,
             "../game/sounds/player2.mp3",
         );
-            
-        
 
         this.newObstacle()
         
@@ -104,9 +101,8 @@ const seaPong = {
             this.wSize.width,
             this.wSize.height
             ) 
-        
-        
     },
+
 
     setDimensions() {
         this.wSize.width = window.innerWidth;
@@ -240,7 +236,13 @@ const seaPong = {
                         case "Orca":
                             this.orcaMethod(obs, ball._player)
                             break
-                        
+
+                        case "Tortoise":
+                            this.tortoiseMethod(obs, ball._player)
+                            break
+
+                        case "Jellyfish":
+                            this.jellyfishMethod(ball, ball._player)
                     }        
 
                 i !== -1 ? this.obsArr.splice(i, 1) : null //this takes out the obstacle from the obsArray    
@@ -351,10 +353,10 @@ const seaPong = {
 
 
     shellMethod(obs, x , y ,velX,player){  //Duplicates the balls in the same direction they where comming
-        let obj =obs
+        let obj = obs
         obj._audioCollision.play()
-        player == 1 ? this.player1._lives += 1 : null
-        player == 2 ? this.player2._lives += 1 : null 
+        player == 1 ? this.player1._lives += 2 : null
+        player == 2 ? this.player2._lives += 2 : null 
         
         let velY = Math.floor(Math.random() * (10 - 5) + 5);
 
@@ -375,10 +377,13 @@ const seaPong = {
     octopusMethod(obs, player){ //Makes bigger the player during 7 seconds
        
         let obj = obs
-       obj._audioStart.play()
+        obj._audioStart.play()
 
         switch(player){
             case 1:
+
+                this.player1._lives += 1
+
                 this.player1._size = 300
                 setTimeout(() => {
                     this.player1._size = 100
@@ -387,6 +392,9 @@ const seaPong = {
                 break
 
             case 2: 
+
+                this.player2._lives += 1
+                 
                 this.player2._size = 300
                 setTimeout(() => {
                     this.player2._size = 100 
@@ -404,6 +412,9 @@ const seaPong = {
 
         switch(player){
             case 1:
+
+                this.player1._lives += 1
+
                 this.keys1.top = 90 // Z
                 this.keys1.down = 81 // Q
 
@@ -415,6 +426,9 @@ const seaPong = {
                 break
 
             case 2 : 
+
+                this.player2._lives += 1
+
                 this.keys2.top = 40 // dwn
                 this.keys2.down = 38 // up
 
@@ -427,6 +441,40 @@ const seaPong = {
 
         }
         
+    },
+
+    tortoiseMethod(obs, player){ //Apply gravity to all the balls during 0.5 secs
+        let obj = obs
+        obj._audio.play()
+        console.log("llamando al metodo tortoise")
+       this.ballArr.forEach(elm => {
+            if(elm._posY > this.canvasDom.height/2){
+                elm._gravity = -0.4
+            } else {
+                elm._gravity = +0.4
+            }
+            setTimeout(() => elm._gravity = 0 , 500)
+
+        }) 
+
+
+        player == 1 ? this.player1._lives += 2 : null
+        player == 2 ? this.player2._lives += 2 : null 
+
+    },
+
+    jellyfishMethod(ball,player){
+
+        player == 1 ? this.player1._lives += 1 : null
+        player == 2 ? this.player2._lives += 1 : null 
+
+        ball._velX *= 1.5
+        ball._velY *= 1.5
+
+        setTimeout(()=> {
+            ball._velX /= 1.5
+            ball._velY /= 1.5},3000)
+
     }
 
 };

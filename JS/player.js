@@ -10,7 +10,7 @@ class Player {
     this._size = 100;
     this.width = 7;
 
-    this._vel = 40;
+    this._vel = 70;
 
     this._keys = keys
 
