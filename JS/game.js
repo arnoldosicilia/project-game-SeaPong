@@ -12,7 +12,10 @@ const seaPong = {
         width: undefined,
         height: undefined
     },
-    
+
+    player1Name: undefined,
+    player2Name: undefined,
+
     keys1: {
         top: 81,//Q
         down: 90//Z
@@ -26,13 +29,6 @@ const seaPong = {
     
     ballArr: [],
     obsArr: [],
-    
-    // obstacleType: ["../game/images/octopus.png",
-    // "../game/images/orca.png",
-    // "../game/images/tortoise.png",
-    // "../game/images/jellyfish.png",
-    // "../game/images/shell.svg"
-    // ],
 
     fps: 60,
     framesCounter: 0,
@@ -41,6 +37,7 @@ const seaPong = {
     lives: 1,
 
     startTimeOut: 100,
+
 
 
 
@@ -54,19 +51,24 @@ const seaPong = {
         this.ctx = this.canvasDom.getContext("2d");
         this.setDimensions();
         this.setHandlers();
-        this.player1Name= document.querySelector("#player1 ")
+        this.setListeners()
+        this.player1Name= document.querySelector("#player1").value
+        this.player2Name= document.querySelector("#player2").value
         this.audioGame = document.createElement("audio")
         this.audioGame.src = "../game/sounds/song.mp3"
         this.audioGame.volume = 0.3
         this.audioGame.play()
-        this.setInstances();
-        this.background.draw();
-        this.player1.draw();
-        this.player2.draw();
-        this.start()   
+        this.reset();
+           
     },
 
-    setInstances() {    // All objets that need to be instanced to start the are called here
+    reset() {  
+        
+        console.log("se resetea el juego ")
+        // All objets that need to be instanced to start the are called here
+
+        this.ballArr = [],
+        this.obsArr = [],
         this.background = new Background(
             this.ctx,
             this.wSize.width,
@@ -74,23 +76,25 @@ const seaPong = {
         );    
         
         this.player1 = new Player(
+            this.player1Name,
             this.ctx,
             this.canvasDom.width,
             this.canvasDom.height,
             30,
             this.keys1,
             this.lives,
-            40,
+            60,
             "../game/sounds/player1.mp3",
-        );
+        )
         this.player2 = new Player(
+            this.player2Name,
             this.ctx,
             this.canvasDom.width,
             this.canvasDom.height,
             this.canvasDom.width-30,
             this.keys2,
             this.lives,
-            this.canvasDom.width-100,
+            this.canvasDom.width-120,
             "../game/sounds/player2.mp3",
         );
 
@@ -100,7 +104,10 @@ const seaPong = {
             this.ctx,
             this.wSize.width,
             this.wSize.height
-            ) 
+            ),
+        this.gameOverStatus = false
+
+        this.start()
     },
 
 
@@ -114,10 +121,21 @@ const seaPong = {
     setHandlers() {
         window.onresize = () => this.setDimensions();
     },
+       
+    setListeners(){
+        document.addEventListener("keydown",  e => {
+
+            if (e.keyCode == 13 && this.gameOverStatus == true) {
+                console.log(e.keyCode) 
+                console.log(this.gameOverStatus)
+                this.reset() }
+        })
         
+    },
         
     start() {
         this.refresh = setInterval(() => {
+
             this.framesCounter++; //contador de frames 
             this.framesCounter == this.startTimeOut ? this.newBall(this.canvasDom.width/2 , this.canvasDom.height/2) : null
             this.framesCounter>5000 ? this.framesCounter = 0 : null
@@ -259,15 +277,18 @@ const seaPong = {
         if (this.ballArr.length == 0){
             clearInterval(this.refresh)
             this.audioGame.pause()
+            this.gameOverStatus = true
+            console.log(this.gameOverStatus)
             ;
             if(this.player1._lives > this.player2._lives){
 
-                this.gameOver.draw("PLAYER 1")
+                this.gameOver.draw(this.player1._name)
                 this.gameOver._audio.play()
+                
 
             } else if (this.player1._lives < this.player2._lives){
 
-                this.gameOver.draw("PLAYER 2")
+                this.gameOver.draw(this.player2._name)
                 this.gameOver._audio.play()
 
             } else {

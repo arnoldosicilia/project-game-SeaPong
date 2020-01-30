@@ -26,9 +26,16 @@
     margin-top: 60px
 }
 
+#keys{
+    width: 450px;
+    padding:180px,100px;
+    margin-left: 750px;
+    margin-top: 150px
+}
+
 #seaPong {
     margin: 20px 0px;
 
-    border-top: 4px solid #e79110dc;
-    border-bottom: 4px solid #e79110dc;
+    border-top: 8px solid #e79110dc;
+    border-bottom: 8px solid #e79110dc;
 }

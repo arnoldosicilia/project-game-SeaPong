@@ -1,5 +1,7 @@
 class Player {
-  constructor(ctx, w, h, x,keys,lives,scoreX,src) {
+  constructor(name, ctx, w, h, x,keys,lives,scoreX,src) {
+    this._name = name
+
     this._ctx = ctx;
     this._gameWidth = w;
     this._gameHeight = h;
@@ -61,8 +63,8 @@ class Player {
 
   drawLives(){
     this._ctx.font = "bold 30px sans-serif"
-    this._ctx.fillStyle = "red";
-    this._ctx.fillText("PTS:  " + this._lives,this._scoreX, 50, 70);
+    this._ctx.fillStyle = "#e79110dc";
+    this._ctx.fillText(`${this._name}:  ` + this._lives,this._scoreX,50,90);
   }
   
   
