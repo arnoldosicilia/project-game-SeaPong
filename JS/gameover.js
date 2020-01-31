@@ -5,9 +5,9 @@ class Gameover {
         this._height = h
 
         this._image = new Image()
-        this._image.src = "../game//images/gameover.png"
+        this._image.src = "images/gameover.png"
 
-        this._audio = new Audio("../game/sounds/gameover.mp3")
+        this._audio = new Audio("sounds/gameover.mp3")
         this._audio.volume = 0.3
 
     }

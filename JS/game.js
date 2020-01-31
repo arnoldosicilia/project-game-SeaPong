@@ -37,6 +37,7 @@ const seaPong = {
     lives: 1,
 
     startTimeOut: 100,
+    
 
 
 
@@ -63,8 +64,7 @@ const seaPong = {
     reset() {  
         
         // All objets that need to be instanced to start the are called here
-
-        this.audioGame.src = "../game/sounds/song.mp3"
+        this.audioGame.src = "sounds/song.mp3"
         this.audioGame.volume = 0.4
         this.audioGame.play()
 
@@ -87,7 +87,7 @@ const seaPong = {
             this.keys1,
             this.lives,
             60,
-            "../game/sounds/player1.mp3",
+            "sounds/player1.mp3",
         )
         this.player2 = new Player(
             this.player2Name,
@@ -98,7 +98,7 @@ const seaPong = {
             this.keys2,
             this.lives,
             this.canvasDom.width-120,
-            "../game/sounds/player2.mp3",
+            "sounds/player2.mp3",
         );
 
         this.newObstacle()
@@ -122,7 +122,7 @@ const seaPong = {
     },
     
     setHandlers() {
-        window.onresize = () => this.setDimensions();
+        window.onresize = () => this.setDimensions()
     },
        
     setListeners(){
@@ -131,7 +131,8 @@ const seaPong = {
             if (e.keyCode == 13 && this.gameOverStatus == true) {
                 console.log(e.keyCode) 
                 console.log(this.gameOverStatus)
-                this.reset() }
+                this.reset() 
+            }
         })
         
     },
@@ -355,9 +356,6 @@ const seaPong = {
         player == 2 ? this.player2._lives -= 1 : null 
         
         i !== -1 ? this.ballArr.splice(i, 1) : null
-        
-
-            
     },    
 
     

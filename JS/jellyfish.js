@@ -3,12 +3,9 @@ class Jellyfish extends Obstacle {
         super(ctx, w, h, x,y)
 
         this._image = new Image()    
-        this._image.src = "../game/images/jellyfish.png"
+        this._image.src = "images/jellyfish.png"
         
-        this._audio = new Audio("../game/sounds/boing.mp3")
-
-        this._audioStart = new Audio("../game/sounds/startItem.mp3")
-        this._audioFinish = new Audio("../game/sounds/finishItem.mp3")
+        this._audio = new Audio("sounds/boing.mp3")
 
         this._id = "Jellyfish"
 

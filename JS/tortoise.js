@@ -3,9 +3,9 @@ class Tortoise extends Obstacle {
         super(ctx, w, h, x,y)
 
         this._image = new Image()    
-        this._image.src = "../game/images/tortoise.png"
+        this._image.src = "images/tortoise.png"
         
-        this._audio = new Audio("../game/sounds/boing.mp3")
+        this._audio = new Audio("sounds/boing.mp3")
 
         this._id = "Tortoise"
 

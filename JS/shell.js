@@ -3,9 +3,9 @@ class Shell extends Obstacle {
         super(ctx, w, h, x, y)
         
         this._image = new Image()    
-        this._image.src = "../game/images/shell.svg"
+        this._image.src = "images/shell.svg"
         
-        this._audioCollision = new Audio("../game/sounds/liveup.mp3")
+        this._audioCollision = new Audio("sounds/liveup.mp3")
 
 
         this._id = "Shell"

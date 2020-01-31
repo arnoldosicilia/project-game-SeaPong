@@ -3,10 +3,10 @@ class Orca extends Obstacle {
         super(ctx, w, h, x, y)
         
         this._image = new Image()    
-        this._image.src = "../game/images/orca.png"
+        this._image.src = "images/orca.png"
         
-        this._audioStart = new Audio("../game/sounds/startItem.mp3")
-        this._audioFinish = new Audio("../game/sounds/finishItem.mp3")
+        this._audioStart = new Audio("sounds/startItem.mp3")
+        this._audioFinish = new Audio("sounds/finishItem.mp3")
 
         this._id = "Orca"
 

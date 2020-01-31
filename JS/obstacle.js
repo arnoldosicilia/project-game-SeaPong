@@ -10,7 +10,7 @@ class Obstacle {
         this._height = 80
 
         this._image = new Image()
-        this._image.src = "../game/images/shell.svg"
+        this._image.src = "images/shell.svg"
     }
 
     draw() {
