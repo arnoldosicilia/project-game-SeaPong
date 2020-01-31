@@ -55,17 +55,18 @@ const seaPong = {
         this.player1Name= document.querySelector("#player1").value
         this.player2Name= document.querySelector("#player2").value
         this.audioGame = document.createElement("audio")
-        this.audioGame.src = "../game/sounds/song.mp3"
-        this.audioGame.volume = 0.3
-        this.audioGame.play()
+        
         this.reset();
            
     },
 
     reset() {  
         
-        console.log("se resetea el juego ")
         // All objets that need to be instanced to start the are called here
+
+        this.audioGame.src = "../game/sounds/song.mp3"
+        this.audioGame.volume = 0.4
+        this.audioGame.play()
 
         this.ballArr = [],
         this.obsArr = [],

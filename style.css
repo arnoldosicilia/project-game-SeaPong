@@ -3,15 +3,37 @@
     padding: 0
 }
 
+input {
+    font-size: 15px;
+    text-align: center;
+    padding: 25px 25px;
+    border-radius: 20px;
+    margin-left: 20px;
+    
+}
+h1, h3 {
+   color :#FFBB4F ; 
+   font-family:sans-serif;
+   text-align: center;
+   margin: 30px;
+}
+
+h1 {
+    font-size: 100px;
+}
+
+h3 {
+    font-size: 40px;
+}
 #startScreen {
-    background-image: url("../game/images/startImage.png");
+    background-image: url("../game/images/startimg.jpg");
     background-size: cover;
-    height: 100%;
+    height: 1000px;
     width: 100%;
     /* display:flex; */
     align-items: center;
     justify-content: center;
-    padding: 300px 15px;
+    padding: 10px 15px;
     
 
 }
@@ -29,8 +51,8 @@
 #keys{
     width: 450px;
     padding:30px 100px;
-    margin-left: 500px;
-    margin-top: 100px
+    margin-left: 350px;
+    margin-top: 20px
 }
 
 #seaPong {
@@ -40,15 +62,6 @@
     border-bottom: 8px solid #03f8c3dc;
 }
 
-input {
-    font-size: 15px;
-    text-align: center;
-    padding: 25px 25px;
-    border-radius: 20px;
-    margin-left: 20px;
-    
-}
-
 #player1{
-    margin-left: 400px;
+    margin-left: 350px;
 }
