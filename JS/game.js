@@ -1,7 +1,7 @@
 const seaPong = {
     name: "Sea Pong",
     description: "Driving minigame",
-    author: ["Arnoldo", "Sara", "Roberto"],
+    author: "Arnoldo",
     license: undefined,
     version: "beta",
 
@@ -67,10 +67,11 @@ const seaPong = {
         this.audioGame.src = "sounds/song.mp3"
         this.audioGame.volume = 0.4
         this.audioGame.play()
-
+        
         this.ballArr = [],
         this.obsArr = [],
         this.framesCounter = 0
+        this.gameOverStatus = false
         
         this.background = new Background(
             this.ctx,
@@ -108,7 +109,6 @@ const seaPong = {
             this.wSize.width,
             this.wSize.height
             ),
-        this.gameOverStatus = false
 
         this.start()
     },
