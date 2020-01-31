@@ -26,7 +26,7 @@ class Player {
 
   draw() {
     this._ctx.lineWidth = this.width;
-    this._ctx.strokeStyle = "white";
+    this._ctx.strokeStyle = "#03f8c3dc";
     this._ctx.beginPath();
     this._ctx.moveTo(this._posX, this._posY);
     this._ctx.lineTo(this._posX, this._posY + this._size);
@@ -63,7 +63,7 @@ class Player {
 
   drawLives(){
     this._ctx.font = "bold 30px sans-serif"
-    this._ctx.fillStyle = "#e79110dc";
+    this._ctx.fillStyle = "#FFBB4F";
     this._ctx.fillText(`${this._name}:  ` + this._lives,this._scoreX,50,90);
   }
   

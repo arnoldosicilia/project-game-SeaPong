@@ -5,6 +5,8 @@ class Octopus extends Obstacle {
         this._image = new Image()    
         this._image.src = "../game/images/octopus.png"
         
+
+        
         this._audioStart = new Audio("../game/sounds/startItem.mp3")
         this._audioFinish = new Audio("../game/sounds/finishItem.mp3")
 
@@ -16,8 +18,6 @@ class Octopus extends Obstacle {
         this._ctx.drawImage(this._image, this._posX, this._posY, this._width, this._height)
     }
 
-    property(){ //changes players sizxe durin 15 secs
-
-    }
+    
     
 }

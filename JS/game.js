@@ -69,6 +69,8 @@ const seaPong = {
 
         this.ballArr = [],
         this.obsArr = [],
+        this.framesCounter = 0
+        
         this.background = new Background(
             this.ctx,
             this.wSize.width,
